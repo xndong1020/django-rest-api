@@ -69,3 +69,4 @@ class BlogpostEditView(TemplateView):
 
         blogpost = form.save()
         return HttpResponseRedirect(reverse('blogDetail', kwargs={'pk': blogpost.id}))
+
