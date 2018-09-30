@@ -4,9 +4,10 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import Blogpost
 from .forms import BlogpostForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class BlogpostView(TemplateView):
+class BlogpostView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/index.html'
 
     def get(self, request):
@@ -19,7 +20,7 @@ class BlogpostView(TemplateView):
         return self.render_to_response({'posts': response})
 
 
-class BlogpostDetailView(TemplateView):
+class BlogpostDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/detail.html'
 
     def get(self, request, pk=None):
@@ -36,7 +37,7 @@ class BlogpostDetailView(TemplateView):
             return self.render_to_response(context)
 
 
-class BlogpostCreateView(TemplateView):
+class BlogpostCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/create.html'
 
     def get(self, request):
@@ -48,21 +49,31 @@ class BlogpostCreateView(TemplateView):
         if not form.is_valid():
             return self.render_to_response({'errors': form.erros})
 
-        blogpost = form.save()
+        blogpost = form.save(commit=False)
+        blogpost.user = request.user
+        blogpost.save()
         return HttpResponseRedirect(reverse('blogDetail', kwargs={'pk': blogpost.id}))
 
 
-class BlogpostEditView(TemplateView):
+class BlogpostEditView(LoginRequiredMixin, TemplateView):
     template_name = "blog/edit.html"
 
     def get(self, request, pk):
         # equivalent to executing Blogpost.objects.get(pk=pk)
         blogpost = get_object_or_404(Blogpost, pk=pk)
+
+        if blogpost.user != request.user:
+            raise Http404
+
         form = BlogpostForm(instance=blogpost)
         return self.render_to_response({'form': form, 'pk': pk})
 
     def post(self, request, pk):
         blogpost = get_object_or_404(Blogpost, pk=pk)
+
+        if blogpost.user != request.user:
+            raise Http404
+
         form = BlogpostForm(data=request.POST, instance=blogpost)
         if not form.is_valid():
             return self.render_to_response({'errors': form.erros})
