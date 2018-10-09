@@ -3,7 +3,12 @@
 {% block content %}
     <form action={% url "accounts-signup" %} method="post" class="form">
         {% csrf_token %}
+
+        {% if form.errors %}
+            {{ form.errors | safe }}
+        {% endif %}
+
         {{ form.as_p }}
-        <input type="submit" value="Submit" class="btn btn-info" />
+        <input type="submit" value="Submit" class="btn btn-info"/>
     </form>
 {% endblock %}

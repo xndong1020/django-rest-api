@@ -55,7 +55,7 @@ class BlogpostCreateView(LoginRequiredMixin, TemplateView):
     def post(self, request):
         form = BlogpostForm(data=request.POST)
         if not form.is_valid():
-            return self.render_to_response({'errors': form.erros})
+            return self.render_to_response({'errors': form.errors})
 
         blogpost = form.save(commit=False)
         blogpost.user = request.user
@@ -84,7 +84,7 @@ class BlogpostEditView(LoginRequiredMixin, TemplateView):
 
         form = BlogpostForm(data=request.POST, instance=blogpost)
         if not form.is_valid():
-            return self.render_to_response({'errors': form.erros})
+            return self.render_to_response({'errors': form.errors})
 
         blogpost = form.save()
         return HttpResponseRedirect(reverse('blog-detail', kwargs={'pk': blogpost.id}))

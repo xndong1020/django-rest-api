@@ -16,7 +16,8 @@ class SignupView(TemplateView):
         form = UserSignupForm(data=request.POST)
 
         if not form.is_valid():
-            return self.render_to_response({'errors': form.erros})
+            print(form.errors)
+            return self.render_to_response({'form': form})
 
         user = form.save()
         return HttpResponseRedirect(reverse('blog-list'))
@@ -29,5 +30,3 @@ class LoginView(views.LoginView):
 class LogoutView(views.LogoutView):
     template_name = 'user/login.html'
     next_page = '/accounts/login'
-
-
