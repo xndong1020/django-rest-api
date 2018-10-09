@@ -39,7 +39,9 @@ class BlogpostDetailView(LoginRequiredMixin, TemplateView):
                 'title': post.title,
                 'author': post.author,
                 'body': post.body,
+                'comments': post.comment_set.filter(blogpost_id=post.id)
             }
+            # print(context)
             return self.render_to_response(context)
 
 
@@ -86,4 +88,3 @@ class BlogpostEditView(LoginRequiredMixin, TemplateView):
 
         blogpost = form.save()
         return HttpResponseRedirect(reverse('blog-detail', kwargs={'pk': blogpost.id}))
-
