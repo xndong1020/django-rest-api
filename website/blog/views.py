@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import Blogpost
+from comment.models import Comment
 from .forms import BlogpostForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -10,8 +11,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class BlogpostView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/index.html'
 
-    def get(self, request):
+    def get(self, request, *args, **kwargs):
         posts = Blogpost.objects.all()
+        # test = Blogpost.objects.get(pk=2)
+        # print(test.comment_set.get(blogpost_id=2).body)
+        # print(posts.get(comment__blogpost_id=2).body)
 
         response = [
             {'id': post.id, 'title': post.title, 'author': post.author, 'body': post.body} for post in posts
@@ -23,7 +27,9 @@ class BlogpostView(LoginRequiredMixin, TemplateView):
 class BlogpostDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'blog/detail.html'
 
-    def get(self, request, pk=None):
+    def get(self, request, pk=None, *args, **kwargs):
+        # aaa = self.kwargs.get('pk')
+        # print(aaa)
         try:
             post = Blogpost.objects.get(pk=pk)
         except Blogpost.DoesNotExist:
@@ -52,7 +58,7 @@ class BlogpostCreateView(LoginRequiredMixin, TemplateView):
         blogpost = form.save(commit=False)
         blogpost.user = request.user
         blogpost.save()
-        return HttpResponseRedirect(reverse('blogDetail', kwargs={'pk': blogpost.id}))
+        return HttpResponseRedirect(reverse('blog-detail', kwargs={'pk': blogpost.id}))
 
 
 class BlogpostEditView(LoginRequiredMixin, TemplateView):
@@ -79,5 +85,5 @@ class BlogpostEditView(LoginRequiredMixin, TemplateView):
             return self.render_to_response({'errors': form.erros})
 
         blogpost = form.save()
-        return HttpResponseRedirect(reverse('blogDetail', kwargs={'pk': blogpost.id}))
+        return HttpResponseRedirect(reverse('blog-detail', kwargs={'pk': blogpost.id}))
 
