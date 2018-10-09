@@ -3,7 +3,7 @@
 #### Installation
 ##### Step 01:
 ```
-pipenv install django, mysqlclient=1.3.12
+pipenv install
 ```
 
 #### Run
