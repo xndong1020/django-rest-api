@@ -94,6 +94,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# use extended user model instead of default user
+AUTH_USER_MODEL = 'user.ApplicationUser'
+
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
