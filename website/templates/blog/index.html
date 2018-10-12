@@ -1,7 +1,19 @@
+{#{% extends "base.html" %}#}
+{##}
+{#{% block content %}#}
+{#{% for p in posts %}#}
+{#<div class="tabs-panel is-active">#}
+{#    <p>#}
+{#        <b>{{ p.id }}.{{ p.title }}</b> by <i>{{ p.author }}</i>#}
+{#    </p>#}
+{#</div>#}
+{#{% endfor %}#}
+{#{% endblock %}#}
+
 {% extends "base.html" %}
 
 {% block content %}
-{% for p in posts %}
+{% for p in blogpost_list %}
 <div class="tabs-panel is-active">
     <p>
         <b>{{ p.id }}.{{ p.title }}</b> by <i>{{ p.author }}</i>

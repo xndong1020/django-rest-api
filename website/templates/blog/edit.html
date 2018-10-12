@@ -1,7 +1,18 @@
+{#{% extends "base.html" %}#}
+{##}
+{#{% block content %}#}
+{#    <form action={% url "blog-edit" pk=pk %} method="post">#}
+{#        {% csrf_token %}#}
+{#        {{ form.as_p }}.#}
+{#        <input type="submit" value="Submit" class="btn btn-info">#}
+{#    </form>#}
+{#{% endblock %}#}
+
+
 {% extends "base.html" %}
 
 {% block content %}
-    <form action={% url "blog-edit" pk=pk %} method="post">
+    <form method="post">
         {% csrf_token %}
         {{ form.as_p }}.
         <input type="submit" value="Submit" class="btn btn-info">

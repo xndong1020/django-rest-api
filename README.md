@@ -11,7 +11,8 @@ pipenv install
 ```
 pipenv shell
 cd website
-python manage.py makemigrations # create migrations file based on your model class chanegs
+python manage.py makemigrations # create migrations file based on your model class changes
 python manage.py migrate # migrate database 
 python manage.py runserver 0.0.0.0:8080
 ```
+
